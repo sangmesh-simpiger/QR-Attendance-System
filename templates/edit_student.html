@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Student</title>
+    <style>
+        body { font-family: sans-serif; padding: 50px; background: #f4f4f4; }
+        .box { background: white; padding: 30px; width: 400px; margin: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;}
+        button { background: #4facfe; color: white; border: none; padding: 12px; width: 100%; cursor: pointer; border-radius: 5px; font-size: 16px;}
+        button:hover { background: #00f2fe; }
+        h2 { text-align: center; color: #333; margin-top: 0; }
+        a { display: block; text-align: center; margin-top: 15px; color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <h2>Edit Student Details</h2>
+        
+        <form method="POST">
+            <label>Student Name:</label>
+            <input type="text" name="name" value="{{ student.name }}" required>
+
+            <label>Roll No:</label>
+            <input type="text" name="roll_no" value="{{ student.roll_no }}" required>
+
+            <label>Course:</label>
+            <select name="course">
+                <option value="BSC.IT" {% if student.course == 'BSC.IT' %}selected{% endif %}>BSC.IT</option>
+                <option value="BCA" {% if student.course == 'BCA' %}selected{% endif %}>BCA</option>
+                <option value="CS" {% if student.course == 'CS' %}selected{% endif %}>CS</option>
+               
+            </select>
+
+            <label>Year:</label>
+            <select name="year">
+                <option value="1" {% if student.year == '1' %}selected{% endif %}>1st Year</option>
+                <option value="2" {% if student.year == '2' %}selected{% endif %}>2nd Year</option>
+                <option value="3" {% if student.year == '3' %}selected{% endif %}>3rd Year</option>
+                <option value="4" {% if student.year == '4' %}selected{% endif %}>4th Year</option>
+            </select>
+
+            <label>Division:</label>
+            <select name="division">
+                <option value="A" {% if student.division == 'A' %}selected{% endif %}>Div A</option>
+                <option value="B" {% if student.division == 'B' %}selected{% endif %}>Div B</option>
+                 <option value="C" {% if student.division == 'C' %}selected{% endif %}>Div C</option>
+            </select>
+
+            <button type="submit">Update Details</button>
+        </form>
+
+        <a href="/admin">← Cancel / Back</a>
+    </div>
+
+</body>
+</html>

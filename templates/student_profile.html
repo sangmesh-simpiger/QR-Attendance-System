@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ student.name }} - ID Card</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* ID Card Container */
+        .id-card-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: 350px;
+            text-align: center;
+        }
+
+        /* Top Header (Gradient) */
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 10px 50px 20px;
+            position: relative;
+        }
+
+        .student-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .student-details {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        /* White Box for QR Code (Floating effect) */
+        .qr-box {
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 160px;
+            height: 160px;
+            margin: -40px auto 20px; /* Isse ye upar header ke upar chadega */
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .qr-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Instructions */
+        .instructions {
+            padding: 0 20px 20px;
+            color: #555;
+            font-size: 14px;
+            text-align: left;
+        }
+        .instructions ul {
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+        .instructions li { margin-bottom: 5px; }
+
+        .btn-download {
+            display: block;
+            width: 80%;
+            margin: 10px auto 20px;
+            padding: 12px;
+            background: #e11d48;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-download:hover { background: #be123c; }
+        
+        .back-link {
+            display: block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="id-card-container">
+        <div class="card-header">
+            <h1 class="student-name">{{ student.name }}</h1>
+            <p class="student-details">Roll No: {{ student.roll_no }} | Course: {{ student.course }}</p>
+            <span class="badge">Division: {{ student.division }}</span>
+        </div>
+
+        <div class="qr-box">
+            <img src="data:image/png;base64,{{ qr_code }}" alt="Student QR Code">
+        </div>
+
+        <div class="instructions">
+            <strong>How to use:</strong>
+            <ul>
+                <li>Show this QR at college entrance.</li>
+                <li>Faculty will scan this for attendance.</li>
+            </ul>
+        </div>
+
+        <a href="#" class="btn-download" onclick="window.print()">Print ID Card</a>
+        <a href="/" class="back-link">← Back to Login</a>
+    </div>
+
+</body>
+</html>

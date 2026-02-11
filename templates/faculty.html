@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Scanner</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #e0e7ff; /* Light purple background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Main Container - Merged Look */
+        .main-card {
+            display: flex;
+            flex-wrap: wrap;
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 900px;
+            gap: 20px;
+            align-items: center;
+        }
+
+        /* Left Side: Scanner */
+        .scanner-section {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+        
+        #reader {
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 5px solid #4e54c8; /* Purple Border */
+        }
+
+        /* Right Side: Student Info Card (Hidden initially) */
+        .info-section {
+            flex: 1;
+            min-width: 300px;
+            display: none; /* Pehle chipa rahega */
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Professional ID Card Design */
+        .id-card {
+            background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+            border-radius: 20px;
+            padding: 25px;
+            color: white;
+            box-shadow: 0 10px 20px rgba(161, 140, 209, 0.4);
+            text-align: center;
+        }
+
+        .id-card h2 { margin: 0; font-size: 28px; }
+        .id-card p { margin: 5px 0; font-size: 16px; opacity: 0.9; }
+        .status-badge {
+            background: white;
+            color: #28a745;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .btn-scan {
+            background: #4e54c8;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+        .btn-scan:hover { background: #3f44a8; transform: scale(1.05); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="main-card">
+    <div class="scanner-section">
+        <h2 style="color: #333;">Live Scanner</h2>
+        <div id="reader"></div>
+        <p id="status-text">Camera is Ready...</p>
+
+        <div class="subject-selector" style="margin: 15px 0;">
+            <select id="subject" class="input-field" style="padding: 10px; width: 100%; border-radius: 5px; border: 1px solid #ccc;">
+                <option value="" disabled selected>-- Select Subject --</option>
+                <option value="DBMS">Software Engineering</option>
+                <option value="OS">Operating Systems</option>
+                <option value="CN">Computer Networks</option>
+                <option value="Java">Java Programming</option>
+            </select>
+        </div>
+        
+        <button class="btn-scan" onclick="startScanner()">Start Camera</button>
+        <a href="/" class="btn-back">← Logout / Back</a>
+
+       
+<style>
+    .btn-back {
+        display: block;
+        margin-top: 15px;
+        color: #666;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: bold;
+    }
+    .btn-back:hover {
+        color: #e11d48; /* Red color on hover */
+        text-decoration: underline;
+    }
+</style>
+    </div>
+
+    <div class="info-section" id="student-card">
+        <div class="id-card">
+            <h2 id="s-name">Student Name</h2>
+            <p>Roll No: <span id="s-roll">---</span></p>
+            <p>Course: <span id="s-course">---</span></p>
+            <div class="status-badge">✅ MARKED PRESENT</div>
+            <p style="margin-top:10px; font-size:12px;">Time: <span id="s-time">--:--</span></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const html5QrCode = new Html5Qrcode("reader");
+
+    function onScanSuccess(decodedText) {
+        // Pause Scanner
+        html5QrCode.pause();
+
+       // 1. Subject value lein
+        var subject = document.getElementById("subject").value;
+
+        // 2. Backend ko bhejein
+        fetch('/mark_attendance', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `student_id=${decodedText}&subject=${subject}`
+        })
+        
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                // Show Card with Animation
+                document.getElementById('student-card').style.display = "block";
+                
+                // Fill Data
+                document.getElementById('s-name').innerText = data.name;
+                document.getElementById('s-roll').innerText = data.roll;
+                document.getElementById('s-course').innerText = data.course || "N/A";
+                document.getElementById('s-time').innerText = data.time;
+                document.getElementById('status-text').innerText = "Scan Successful!";
+                document.getElementById('status-text').style.color = "green";
+                
+                // 3 Sec baad firse scan karega
+                setTimeout(() => {
+                    document.getElementById('student-card').style.display = "none";
+                    document.getElementById('status-text').innerText = "Scanning...";
+                    html5QrCode.resume();
+                }, 4000);
+            } else {
+                alert("Error: " + data.message);
+                html5QrCode.resume();
+            }
+        });
+    }
+
+    function startScanner() {
+        // 1. Pehle check karein ki subject select hai ya nahi
+        var subject = document.getElementById("subject").value;
+        
+        if (subject === "") {
+            alert("Pehle Subject Select karein! (Please select a subject first)");
+            // Dropdown ko highlight karein taaki user dekh sake
+            document.getElementById("subject").focus();
+            return; // Yahi ruk jayega, camera on nahi hoga
+        }
+
+        // 2. Agar subject hai, toh Camera Start karein
+        html5QrCode.start(
+            { facingMode: "environment" },
+            { fps: 10, qrbox: { width: 250, height: 250 } },
+            onScanSuccess
+        );
+    }
+</script>
+
+</body>
+</html>
