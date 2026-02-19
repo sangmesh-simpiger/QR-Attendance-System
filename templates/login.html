@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Attendance Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Body aur Background Animation */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background: #4e54c8;  
+            background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);  
+        }
+
+        /* Login Card Design */
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+            z-index: 10; /* Animation ke upar dikhega */
+            position: relative;
+        }
+
+        .login-card h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        /* Inputs */
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            box-sizing: border-box;
+            transition: 0.3s;
+            font-size: 15px;
+        }
+        input:focus { border-color: #6a11cb; outline: none; }
+
+        /* Buttons Container */
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* Buttons ke beech gap */
+            margin-top: 10px;
+        }
+
+        /* Common Button Style */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* 1. Student Button (Purple Gradient - Highlighted) */
+        .btn-student {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+        }
+        .btn-student:hover { transform: translateY(-2px); }
+
+        /* 2. Faculty Button (Blue) */
+        .btn-faculty { background: #3b82f6; }
+        
+        /* 3. Admin Button (Pink/Red) */
+        .btn-admin { background: #ec4899; }
+        
+        .btn-faculty:hover, .btn-admin:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        /* Background Animation (Squares) */
+        .area { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        .circles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; margin: 0; padding: 0; }
+        .circles li {
+            position: absolute; display: block; list-style: none;
+            width: 20px; height: 20px; background: rgba(255, 255, 255, 0.2);
+            animation: animate 25s linear infinite; bottom: -150px;
+        }
+        .circles li:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
+        .circles li:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+        .circles li:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
+        .circles li:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
+        .circles li:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
+        .circles li:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
+        
+        @keyframes animate {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="area">
+        <ul class="circles">
+            <li></li><li></li><li></li><li></li><li></li><li></li>
+        </ul>
+    </div>
+
+    <div class="login-card">
+        <h2><i class="fas fa-university"></i> College Login</h2>
+        
+        <form method="POST">
+            <input type="text" name="username" placeholder="Username / Roll No" required>
+            <input type="password" name="password" placeholder="Password" required>
+
+            <div class="button-group">
+                <button type="submit" formaction="/login_student" class="btn btn-student">
+                    <i class="fas fa-user-graduate"></i> Login as Student
+                </button>
+
+                <button type="submit" formaction="/login_faculty" class="btn btn-faculty">
+                    <i class="fas fa-chalkboard-teacher"></i> Login as Faculty
+                </button>
+
+                <button type="submit" formaction="/login_admin" class="btn btn-admin">
+                    <i class="fas fa-user-shield"></i> Login as Admin
+                </button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
