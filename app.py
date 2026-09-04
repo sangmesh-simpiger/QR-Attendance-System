@@ -172,8 +172,8 @@ def add_student():
 def setup_demo():
     # 5 Naye Students ka Data
     students_data = [
-        {"id": "101", "name": "Rahul Sharma", "roll": "CS101", "course": "B.Tech CS", "div": "A"},
-        {"id": "102", "name": "Priya Singh",  "roll": "IT102", "course": "B.Tech IT", "div": "B"},
+        {"id": "101", "name": "Rahul Sharma", "roll": "CS101", "course": "BSC.IT", "div": "A"},
+        {"id": "102", "name": "Priya Singh",  "roll": "IT102", "course": "BSC.IT", "div": "B"},
         {"id": "103", "name": "Amit Verma",   "roll": "ME103", "course": "Mechanical", "div": "A"},
         {"id": "104", "name": "Sneha Gupta",  "roll": "CS104", "course": "B.Tech CS", "div": "C"},
         {"id": "105", "name": "Vikram Malhotra", "roll": "CV105", "course": "Civil", "div": "A"}
